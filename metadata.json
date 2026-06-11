@@ -1,0 +1,8 @@
+{
+  "name": "DiffractoTEM - F Mares-Briones",
+  "description": "An advanced crystallographic simulation and analysis tool for TEM/SAED transmission electron diffraction and XRD. Import CIF files, simulate polycrystalline rings and single crystal spot patterns, perform FFT/IFFT, compare experimental images, and auto-index Miller indices.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

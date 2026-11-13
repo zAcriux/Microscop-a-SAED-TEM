@@ -1,5 +1,7 @@
 # TEM Lab – análisis de micrografías electrónicas para Android
 
+**Copyright © 2026 F. Mares-Briones.** Todos los derechos reservados.
+
 TEM Lab es una aplicación Android nativa (Kotlin + Jetpack Compose + Material 3) para visualizar, procesar,
 medir y analizar micrografías TEM, HRTEM, SEM, STEM y HAADF-STEM. Funciona completamente sin conexión: todo el
 procesamiento se hace en el dispositivo.

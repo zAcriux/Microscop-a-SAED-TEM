@@ -146,3 +146,6 @@ ya detectada, se marcan como **duplicado** y no se cuentan dos veces.
 * **Reporte:** elija las secciones (muestra, adquisición, originales, procesadas, procesamiento, FFT, IFFT,
   partículas, histogramas y tablas) y las micrografías, y pulse **Generar reporte PDF**. Las selecciones pueden
   guardarse como **plantillas**.
+
+---
+© 2026 F. Mares-Briones. Todos los derechos reservados.

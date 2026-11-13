@@ -1,3 +1,7 @@
+/*
+ * TEM Lab
+ * Copyright © 2026 F. Mares-Briones. All rights reserved.
+ */
 package com.temlab.app.render
 
 import android.graphics.Bitmap
@@ -56,7 +60,7 @@ class ReportWriter(private val info: ReportInfo) {
         page = p; c = p.canvas; y = margin
     }
     private fun finishPage(p: PdfDocument.Page) {
-        p.canvas.drawText("TEM Lab – ${info.title} – ${t("page", "pág.")} $pageNo", margin, ph - 20f, small)
+        p.canvas.drawText("TEM Lab © F. Mares-Briones – ${info.title} – ${t("page", "pág.")} $pageNo", margin, ph - 20f, small)
         doc.finishPage(p)
     }
     private fun ensure(h: Float) { if (c == null || y + h > ph - margin) newPage() }

@@ -138,3 +138,6 @@ originales, de modo que se puede restaurar en otro dispositivo.
   Cargan micrografías sintéticas, recorren todos los módulos, comprueban d en la FFT, el número de partículas y el
   guardado del proyecto, y escriben las capturas de `docs/screenshots/`. El framework de Android se descarga con
   Gradle (`robolectricRuntime`), no en tiempo de ejecución.
+
+---
+© 2026 F. Mares-Briones. Todos los derechos reservados.

@@ -1,3 +1,7 @@
+/*
+ * TEM Lab
+ * Copyright © 2026 F. Mares-Briones. All rights reserved.
+ */
 package com.temlab.app.screens
 
 import android.net.Uri
@@ -205,6 +209,7 @@ fun SettingsDialog(vm: AppViewModel, onClose: () -> Unit) {
             Text(tr("Language", "Idioma"))
             ChipRow(Lang.entries, vm.lang, { when (it) { Lang.SYSTEM -> tr("System", "Sistema"); Lang.ES -> "Español"; Lang.EN -> "English" } }) { vm.setLanguage(it) }
             Text(tr("All processing is done locally on this device; no data leaves it.", "Todo el procesamiento se realiza localmente en el dispositivo; ningún dato sale de él."), style = MaterialTheme.typography.bodySmall)
+            Text("TEM Lab 0.1.0 · © 2026 F. Mares-Briones", style = MaterialTheme.typography.bodySmall)
         }
     })
 }
@@ -220,6 +225,7 @@ fun HomeScreen(vm: AppViewModel, onOpenFiles: () -> Unit, onEnter: () -> Unit) {
     LazyColumn(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         item {
             Text(stringResource(R.string.app_tagline), style = MaterialTheme.typography.titleMedium)
+            Text("© 2026 F. Mares-Briones", style = MaterialTheme.typography.labelSmall)
             Text(tr("DM3 · DM4 · TIFF (8/16/32-bit, multipage) · MRC · PNG · JPG · BMP — processed offline on the device.",
                 "DM3 · DM4 · TIFF (8/16/32 bits, multipágina) · MRC · PNG · JPG · BMP — procesado sin conexión en el dispositivo."), style = MaterialTheme.typography.bodySmall)
         }

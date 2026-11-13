@@ -56,3 +56,6 @@ desarrollo. Ningún resultado de esta lista se ha simulado.
 * **Idioma:** los nombres de las variables de partículas y algunas cabeceras de tablas exportadas están en inglés.
 * **Lápiz digital:** se trata como un dedo; no usa presión ni el botón lateral.
 * El APK de release se firma con la clave de depuración salvo que se configure un keystore propio.
+
+---
+© 2026 F. Mares-Briones. Todos los derechos reservados.

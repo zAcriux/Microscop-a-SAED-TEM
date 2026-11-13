@@ -85,3 +85,6 @@ Flujo completo en la actividad real:
 7. guardar el proyecto y volver a leer el JSON.
 
 Las capturas están en [screenshots/](screenshots/).
+
+---
+© 2026 F. Mares-Briones. Todos los derechos reservados.

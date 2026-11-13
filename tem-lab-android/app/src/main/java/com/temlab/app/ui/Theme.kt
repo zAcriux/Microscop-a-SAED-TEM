@@ -1,3 +1,7 @@
+/*
+ * TEM Lab
+ * Copyright © 2026 F. Mares-Briones. All rights reserved.
+ */
 package com.temlab.app.ui
 
 import android.os.Build

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TEM Lab</string>
+    <string name="app_tagline">Análisis de micrografías electrónicas</string>
+</resources>

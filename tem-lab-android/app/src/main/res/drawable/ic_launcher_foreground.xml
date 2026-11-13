@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <!-- stylised diffraction pattern: central beam + hexagonal reflections + ring -->
+    <path android:fillColor="#00000000" android:strokeColor="#5EC8F2" android:strokeWidth="2.2"
+        android:pathData="M54,30 a24,24 0 1,0 0.01,0 z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M54,49 a5,5 0 1,0 0.01,0 z" />
+    <path android:fillColor="#FFD54F" android:pathData="M54,32 a3.2,3.2 0 1,0 0.01,0 z" />
+    <path android:fillColor="#FFD54F" android:pathData="M54,70 a3.2,3.2 0 1,0 0.01,0 z" />
+    <path android:fillColor="#FFD54F" android:pathData="M73,43 a3.2,3.2 0 1,0 0.01,0 z" />
+    <path android:fillColor="#FFD54F" android:pathData="M35,43 a3.2,3.2 0 1,0 0.01,0 z" />
+    <path android:fillColor="#FFD54F" android:pathData="M73,61 a3.2,3.2 0 1,0 0.01,0 z" />
+    <path android:fillColor="#FFD54F" android:pathData="M35,61 a3.2,3.2 0 1,0 0.01,0 z" />
+</vector>

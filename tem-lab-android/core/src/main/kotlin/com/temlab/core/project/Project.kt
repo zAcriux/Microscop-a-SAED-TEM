@@ -50,6 +50,9 @@ data class ScaleBarStyle(
 data class CalibrationChange(val timestamp: Long, val from: Calibration, val to: Calibration, val reason: String)
 
 @Serializable
+data class AngleRecord(val a: Int, val b: Int, val angleDeg: Double)
+
+@Serializable
 data class SavedFft(
     val id: Int,
     val label: String,
@@ -57,6 +60,8 @@ data class SavedFft(
     val options: FftOptions,
     val reflections: List<Reflection>,
     val notes: String = "",
+    val pairs: List<com.temlab.core.fft.SymmetricPairResult> = emptyList(),
+    val angles: List<AngleRecord> = emptyList(),
 )
 
 @Serializable

@@ -18,3 +18,11 @@ View your app in AI Studio: https://ai.studio/apps/c76e78a9-ccbb-462d-9eec-a7948
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+---
+
+## TEM Lab (Android)
+
+Native Android app for TEM/HRTEM/SEM/STEM micrograph analysis (DM3/DM4/TIFF reading, interactive FFT with
+d-spacing measurement, Fourier filtering/IFFT, particle analysis with dynamic histograms, PDF reports).
+See [`tem-lab-android/README.md`](tem-lab-android/README.md). Installable APK: `tem-lab-android/dist/`.

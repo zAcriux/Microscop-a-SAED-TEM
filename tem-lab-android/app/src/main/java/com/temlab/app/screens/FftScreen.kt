@@ -142,7 +142,7 @@ fun FftScreen(vm: AppViewModel, d: Doc) {
         s?.let {
             val disp = it.result.display(if (power) SpectrumScale.POWER else SpectrumScale.AMPLITUDE, log)
             val hi = Figures.percentile(disp, sat)
-            RenderedTile(Render.floatBitmap(disp, it.result.n, it.result.n, hi = hi, gamma = gamma.toDouble(), colormap = colormap).asImageBitmap(), 0, 0, it.result.n, it.result.n)
+            RenderedTile(Render.floatBitmap(disp, it.result.n, it.result.n, lo = Figures.percentile(disp, 0.5f), hi = hi, gamma = gamma.toDouble(), colormap = colormap).asImageBitmap(), 0, 0, it.result.n, it.result.n)
         }
     }
     fun dStr(r: Reflection) = Figures.dLabel(r.d, r.unit, unit)

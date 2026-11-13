@@ -53,6 +53,14 @@ android {
     kotlinOptions { jvmTarget = "17" }
     buildFeatures { compose = true }
     packaging { resources.excludes += "/META-INF/{AL2.0,LGPL2.1}" }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+        unitTests.all {
+            it.maxHeapSize = "3g"
+            it.systemProperty("robolectric.graphicsMode", "NATIVE")
+            it.systemProperty("temlab.screens", rootProject.file("docs/screenshots").absolutePath)
+        }
+    }
 }
 
 dependencies {
@@ -71,5 +79,27 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.robolectric:robolectric:4.14.1")
+    testImplementation("androidx.compose.ui:ui-test-junit4")
+    testImplementation(composeBom)
     implementation("androidx.compose.ui:ui-tooling-preview")
+}
+
+// Robolectric normally downloads the Android framework jar at test time; resolve it through Gradle instead
+// (works behind proxies/mirrors) and run Robolectric in offline mode.
+val robolectricRuntime: Configuration by configurations.creating { isTransitive = false }
+dependencies {
+    robolectricRuntime("org.robolectric:android-all-instrumented:14-robolectric-10818077-i7")
+    robolectricRuntime("org.robolectric:android-all-instrumented:15-robolectric-12650502-i7")
+}
+val copyRobolectricJars by tasks.registering(Copy::class) {
+    from(robolectricRuntime)
+    into(layout.buildDirectory.dir("robolectric-jars"))
+}
+tasks.withType<Test>().configureEach {
+    dependsOn(copyRobolectricJars)
+    systemProperty("robolectric.offline", "true")
+    systemProperty("robolectric.dependency.dir", layout.buildDirectory.dir("robolectric-jars").get().asFile.absolutePath)
 }

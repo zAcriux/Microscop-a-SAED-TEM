@@ -93,7 +93,7 @@ object Figures {
     fun fftFigure(s: FftSession, log: Boolean, scale: SpectrumScale, gamma: Double, unit: LengthUnit, saturation: Float = 0.999f): Bitmap {
         val disp = s.result.display(scale, log)
         val hi = percentile(disp, saturation)
-        val bmp = Render.floatBitmap(disp, s.result.n, s.result.n, hi = hi, gamma = gamma).copy(Bitmap.Config.ARGB_8888, true)
+        val bmp = Render.floatBitmap(disp, s.result.n, s.result.n, lo = percentile(disp, 0.5f), hi = hi, gamma = gamma).copy(Bitmap.Config.ARGB_8888, true)
         val c = Canvas(bmp)
         val k = max(1f, s.result.n / 512f)
         val p = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.rgb(255, 213, 79); strokeWidth = 1.5f * k; style = Paint.Style.STROKE }

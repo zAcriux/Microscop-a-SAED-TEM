@@ -109,7 +109,7 @@ fun IfftScreen(vm: AppViewModel, d: Doc) {
     // Unwindowed, unpadded spectrum of the ROI (the filter operates on exactly these coefficients)
     val spec = remember(img, roi) { FftAnalysis.compute(img, roi, FftOptions(hannWindow = false, paddedSize = 0, subtractMean = true)) }
     val n = spec.n; val c = spec.center
-    val specTile = remember(spec) { val disp = spec.display(SpectrumScale.AMPLITUDE, true); RenderedTile(Render.floatBitmap(disp, n, n, hi = Figures.percentile(disp, 0.999f)).asImageBitmap(), 0, 0, n, n) }
+    val specTile = remember(spec) { val disp = spec.display(SpectrumScale.AMPLITUDE, true); RenderedTile(Render.floatBitmap(disp, n, n, lo = Figures.percentile(disp, 0.5f), hi = Figures.percentile(disp, 0.999f)).asImageBitmap(), 0, 0, n, n) }
     val roiImg = remember(img, roi) { img.crop(roi.x, roi.y, roi.size, roi.size) }
     val roiTile = remember(roiImg, d.display) { Render.preview(roiImg, d.display) }
 

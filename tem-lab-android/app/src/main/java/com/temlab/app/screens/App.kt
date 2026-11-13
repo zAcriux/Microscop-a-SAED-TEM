@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -154,8 +155,19 @@ fun TemLabApp(vm: AppViewModel) {
                     Box(Modifier.weight(1f)) { ModeContent(vm, mode) }
                 } else Column(Modifier.fillMaxSize()) {
                     Box(Modifier.weight(1f)) { ModeContent(vm, mode) }
-                    NavigationBar(Modifier.horizontalScroll(rememberScrollState())) {
-                        Mode.entries.forEach { m -> NavigationBarItem(selected = m == mode, onClick = { mode = m }, icon = { Icon(m.icon, null) }, label = { Text(tr(m.en, m.es), fontSize = 9.sp, maxLines = 1) }, modifier = Modifier.width(72.dp)) }
+                    // Scrollable bottom bar (NavigationBar itself cannot scroll horizontally)
+                    androidx.compose.material3.Surface(tonalElevation = 3.dp) {
+                        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(vertical = 4.dp)) {
+                            Mode.entries.forEach { m ->
+                                val sel = m == mode
+                                Column(Modifier.width(76.dp).clickable { mode = m }.padding(vertical = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Box(Modifier.size(width = 52.dp, height = 30.dp).then(if (sel) Modifier.background(MaterialTheme.colorScheme.secondaryContainer, androidx.compose.foundation.shape.RoundedCornerShape(15.dp)) else Modifier), contentAlignment = Alignment.Center) {
+                                        Icon(m.icon, null, tint = if (sel) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant)
+                                    }
+                                    Text(tr(m.en, m.es), fontSize = 10.sp, maxLines = 1, color = if (sel) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant)
+                                }
+                            }
+                        }
                     }
                 }
             }

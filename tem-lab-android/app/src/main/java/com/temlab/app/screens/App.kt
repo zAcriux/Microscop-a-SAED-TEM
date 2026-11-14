@@ -209,7 +209,7 @@ fun SettingsDialog(vm: AppViewModel, onClose: () -> Unit) {
             Text(tr("Language", "Idioma"))
             ChipRow(Lang.entries, vm.lang, { when (it) { Lang.SYSTEM -> tr("System", "Sistema"); Lang.ES -> "Español"; Lang.EN -> "English" } }) { vm.setLanguage(it) }
             Text(tr("All processing is done locally on this device; no data leaves it.", "Todo el procesamiento se realiza localmente en el dispositivo; ningún dato sale de él."), style = MaterialTheme.typography.bodySmall)
-            Text("TEM Lab 0.1.0 · © 2026 F. Mares-Briones", style = MaterialTheme.typography.bodySmall)
+            Text("TEM Lab 0.1.1 · © 2026 F. Mares-Briones", style = MaterialTheme.typography.bodySmall)
         }
     })
 }

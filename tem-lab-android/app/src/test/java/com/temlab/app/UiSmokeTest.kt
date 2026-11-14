@@ -7,6 +7,7 @@ package com.temlab.app
 import android.graphics.Bitmap
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.ViewModelProvider
 import com.temlab.app.data.AppViewModel
@@ -135,6 +136,10 @@ abstract class UiSmokeBase {
         click("IFFT")
         pump(4000)
         shot("04_ifft")
+        // Enlarge only the IFFT panel, then restore the 4-panel grid
+        rule.onAllNodesWithContentDescription("Ampliar / restaurar")[3].performClick(); pump(1500)
+        shot("04b_ifft_enlarged")
+        rule.onAllNodesWithContentDescription("Ampliar / restaurar")[0].performClick(); pump(500)
 
         // Particles + statistics on the second micrograph
         rule.runOnUiThread { vm.current = np; vm.segment(np, SegmentationParams(watershed = true), com.temlab.core.particles.ParticleFilter()) }

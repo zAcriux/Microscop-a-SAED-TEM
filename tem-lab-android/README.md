@@ -6,7 +6,7 @@ TEM Lab es una aplicación Android nativa (Kotlin + Jetpack Compose + Material 3
 medir y analizar micrografías TEM, HRTEM, SEM, STEM y HAADF-STEM. Funciona completamente sin conexión: todo el
 procesamiento se hace en el dispositivo.
 
-* **APK instalable:** [`dist/TEMLab-0.1.0-release.apk`](dist/) (Android 8.0+, API 26). Está firmado con la clave
+* **APK instalable:** [`dist/TEMLab-0.1.1-release.apk`](dist/) (Android 8.0+, API 26). Está firmado con la clave
   de depuración, así que se instala desde el archivo. Para publicarlo en una tienda hay que firmarlo con una clave
   propia (ver más abajo).
 * **Manual de usuario:** [docs/MANUAL_USUARIO.md](docs/MANUAL_USUARIO.md)

@@ -2,7 +2,7 @@
 
 ## 1. Instalación
 
-1. Copie `TEMLab-0.1.0-release.apk` al dispositivo (Android 8.0 o superior).
+1. Copie `TEMLab-0.1.1-release.apk` al dispositivo (Android 8.0 o superior).
 2. Ábralo y permita la instalación desde esa fuente.
 3. El idioma (español o inglés) y el tema (claro u oscuro) se cambian en ⚙ **Ajustes**. Por defecto siguen la
    configuración del sistema.
@@ -95,8 +95,10 @@ ya detectada, se marcan como **duplicado** y no se cuentan dos veces.
    externo.
 3. **Máscaras conjugadas automáticas:** mantienen la simetría hermítica para que la reconstrucción sea real. El
    control "residuo imaginario" debe ser cercano a 0.
-4. Los cuatro paneles (región original, FFT con máscara, máscara e IFFT) se actualizan automáticamente y tienen
-   zoom sincronizado.
+4. Los cuatro paneles (región original, FFT con máscara, máscara e IFFT) se actualizan automáticamente. Cada uno
+   tiene su propio zoom, recortado a su recuadro; active *Zoom sincronizado* si prefiere moverlos juntos. El botón ⛶
+   de cada panel lo amplía a toda el área y, al tocarlo de nuevo, vuelve a los cuatro paneles. La pantalla FFT tiene
+   el mismo botón en la micrografía y en el espectro.
 5. Arrastre una línea sobre la IFFT para obtener el perfil, el periodo y la orientación, comparados con la d de
    cada reflexión enmascarada.
 6. **Abrir como imagen** crea una pestaña ⚗ etiquetada como filtrada. También puede exportar TIFF de 32 bits

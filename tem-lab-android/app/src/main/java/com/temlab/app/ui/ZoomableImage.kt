@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -50,6 +51,7 @@ class ViewTransform {
     var rotation by mutableFloatStateOf(0f)
     var viewSize by mutableStateOf(Size.Zero)
     var fittedFor by mutableStateOf<IntSize?>(null)
+    var fittedView by mutableStateOf(Size.Zero)
 
     private fun rot(p: Offset, deg: Float): Offset {
         val a = Math.toRadians(deg.toDouble()); val c = cos(a).toFloat(); val s = sin(a).toFloat()
@@ -64,7 +66,7 @@ class ViewTransform {
         if (viewSize.width <= 0f || viewSize.height <= 0f) return
         scale = min(viewSize.width / w, viewSize.height / h) * 0.98f
         offset = Offset((viewSize.width - w * scale) / 2, (viewSize.height - h * scale) / 2)
-        fittedFor = IntSize(w, h)
+        fittedFor = IntSize(w, h); fittedView = viewSize
     }
 
     fun zoomAbout(centroid: Offset, zoom: Float) {
@@ -121,7 +123,7 @@ fun ZoomableImage(
     val onChanged by rememberUpdatedState(onTransformChanged)
 
     LaunchedEffect(imageW, imageH, transform.viewSize) {
-        if (transform.fittedFor != IntSize(imageW, imageH) && transform.viewSize.width > 0) transform.fit(imageW, imageH)
+        if ((transform.fittedFor != IntSize(imageW, imageH) || transform.fittedView != transform.viewSize) && transform.viewSize.width > 0) transform.fit(imageW, imageH)
     }
     if (detailRenderer != null && tile != null) {
         LaunchedEffect(tile, transform.scale, transform.offset, transform.rotation, transform.viewSize) {
@@ -135,7 +137,7 @@ fun ZoomableImage(
         }
     }
 
-    Box(modifier.background(background).onSizeChanged { transform.viewSize = Size(it.width.toFloat(), it.height.toFloat()) }) {
+    Box(modifier.clipToBounds().background(background).onSizeChanged { transform.viewSize = Size(it.width.toFloat(), it.height.toFloat()) }) {
         Canvas(
             Modifier.matchParentSize().pointerInput(imageW, imageH) {
                 awaitEachGesture {

@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Fullscreen
+import androidx.compose.material.icons.filled.FullscreenExit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -134,6 +136,7 @@ fun FftScreen(vm: AppViewModel, d: Doc) {
     var unit by remember { mutableStateOf(LengthUnit.NM) }
     var sigma by remember { mutableStateOf(5.0) }
     var cursor by remember { mutableStateOf<Offset?>(null) }
+    var expanded by remember { mutableStateOf(-1) }
     val pending = remember { mutableStateListOf<Reflection>() }
     var lastMsg by remember { mutableStateOf("") }
     var profile by remember { mutableStateOf<Pair<DoubleArray, DoubleArray>?>(null) }
@@ -201,9 +204,15 @@ fun FftScreen(vm: AppViewModel, d: Doc) {
     AdaptivePane(image = { mod ->
         BoxWithConstraints(mod) {
             val wide = maxWidth > maxHeight
-            val content: @Composable (Modifier, Modifier) -> Unit = { m1, m2 ->
-                DocImage(d, m1, tImg, roiTool(d, img.width, img.height), showScaleBar = false) { sc -> roiOverlay(d.roi, sc); d.ffts.filter { it != s }.forEach { roiOverlay(it.roi, sc, Color(0x8800E5FF)) } }
-                if (s != null) ZoomableImage(tile, s.result.n, s.result.n, m2, tFft, fftTool) { sc ->
+            @Composable fun expandBtn(idx: Int, m: Modifier) = IconButton(onClick = { expanded = if (expanded == idx) -1 else idx }, modifier = m) {
+                Icon(if (expanded == idx) Icons.Filled.FullscreenExit else Icons.Filled.Fullscreen, tr("Enlarge / restore", "Ampliar / restaurar"), tint = Color.White)
+            }
+            @Composable fun imagePane(m1: Modifier) = androidx.compose.foundation.layout.Box(m1) {
+                DocImage(d, Modifier.fillMaxSize(), tImg, roiTool(d, img.width, img.height), showScaleBar = false) { sc -> roiOverlay(d.roi, sc); d.ffts.filter { it != s }.forEach { roiOverlay(it.roi, sc, Color(0x8800E5FF)) } }
+                expandBtn(0, Modifier.align(Alignment.TopEnd))
+            }
+            @Composable fun fftPane(m2: Modifier) = androidx.compose.foundation.layout.Box(m2) {
+                if (s != null) ZoomableImage(tile, s.result.n, s.result.n, Modifier.fillMaxSize(), tFft, fftTool) { sc ->
                     val c = s.result.center.toFloat()
                     drawCircle(Color.Cyan, 5f / sc, Offset(c, c), style = Stroke(2f / sc))
                     for (r in s.reflections) {
@@ -215,7 +224,11 @@ fun FftScreen(vm: AppViewModel, d: Doc) {
                     cursor?.let { drawCircle(Color.Green, radius, it, style = Stroke(1.5f / sc)) }
                     profileLine?.let { (a, b) -> drawLine(Color.Green, a, b, 2f / sc) }
                 } else com.temlab.app.ui.EmptyHint(tr("Select a square region on the micrograph and press “Compute FFT”.", "Seleccione una región cuadrada en la micrografía y pulse “Calcular FFT”."))
+            
+                if (s != null) expandBtn(1, Modifier.align(Alignment.TopEnd))
             }
+            val content: @Composable (Modifier, Modifier) -> Unit = { m1, m2 -> imagePane(m1); fftPane(m2) }
+            if (expanded == 0) imagePane(Modifier.fillMaxSize()) else if (expanded == 1) fftPane(Modifier.fillMaxSize()) else
             if (wide) Row(Modifier.fillMaxSize()) { content(Modifier.weight(1f).fillMaxSize(), Modifier.weight(1f).fillMaxSize()) }
             else Column(Modifier.fillMaxSize()) { content(Modifier.weight(1f).fillMaxWidth(), Modifier.weight(1f).fillMaxWidth()) }
         }

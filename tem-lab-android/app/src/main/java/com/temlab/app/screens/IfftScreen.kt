@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Fullscreen
+import androidx.compose.material.icons.filled.FullscreenExit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -96,7 +98,8 @@ fun IfftScreen(vm: AppViewModel, d: Doc) {
     var angle by remember { mutableStateOf(0f) }
     var soft by remember { mutableStateOf(2f) }
     var auto by remember { mutableStateOf(true) }
-    var sync by remember { mutableStateOf(true) }
+    var sync by remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(-1) }
     var editRoi by remember { mutableStateOf(false) }
     var result by remember { mutableStateOf<IfftSession?>(null) }
     var liveRes by remember { mutableStateOf<com.temlab.core.fft.FilterResult?>(null) }
@@ -158,24 +161,28 @@ fun IfftScreen(vm: AppViewModel, d: Doc) {
         })
 
     @Composable
-    fun pane(title: String, tile: RenderedTile?, t: ViewTransform, mod: Modifier, tool: ToolHandler = ToolHandler(), overlay: androidx.compose.ui.graphics.drawscope.DrawScope.(Float) -> Unit = {}) {
+    fun pane(idx: Int, title: String, tile: RenderedTile?, t: ViewTransform, mod: Modifier, tool: ToolHandler = ToolHandler(), overlay: androidx.compose.ui.graphics.drawscope.DrawScope.(Float) -> Unit = {}) {
         Box(mod.padding(1.dp)) {
             ZoomableImage(tile, n, n, Modifier.fillMaxSize(), t, tool, onTransformChanged = { if (sync) listOf(tA, tB, tC, tD).forEach { if (it !== t) it.copyFrom(t) } }, overlay = overlay)
             Text(title, color = Color.White, fontSize = 11.sp, modifier = Modifier.align(Alignment.TopStart).padding(4.dp))
+            IconButton(onClick = { expanded = if (expanded == idx) -1 else idx }, modifier = Modifier.align(Alignment.TopEnd)) {
+                Icon(if (expanded == idx) Icons.Filled.FullscreenExit else Icons.Filled.Fullscreen, tr("Enlarge / restore", "Ampliar / restaurar"), tint = Color.White)
+            }
         }
     }
 
     AdaptivePane(image = { mod ->
+        @Composable fun p0(m: Modifier) = pane(0, tr("Original region", "Región original"), roiTile, tA, m)
+        @Composable fun p1(m: Modifier) = pane(1, tr("FFT + mask (tap reflections)", "FFT + máscara (toque reflexiones)"), specTile, tB, m, fftTool) { s -> maskShapesOverlay(d.mask, c, s, n) }
+        @Composable fun p2(m: Modifier) = pane(2, tr("Mask", "Máscara"), maskTile, tC, m)
+        @Composable fun p3(m: Modifier) = pane(3, tr("IFFT – FILTERED", "IFFT – FILTRADA"), recTile, tD, m, recTool) { s -> profileLine?.let { (a, b) -> drawLine(Color.Green, a, b, 2f / s) } }
         if (editRoi) DocImage(d, mod, tMain, roiTool(d, img.width, img.height), showScaleBar = false) { s -> roiOverlay(d.roi, s) }
+        else if (expanded >= 0) Box(mod) {
+            when (expanded) { 0 -> p0(Modifier.fillMaxSize()); 1 -> p1(Modifier.fillMaxSize()); 2 -> p2(Modifier.fillMaxSize()); else -> p3(Modifier.fillMaxSize()) }
+        }
         else Column(mod) {
-            Row(Modifier.weight(1f)) {
-                pane(tr("Original region", "Región original"), roiTile, tA, Modifier.weight(1f).fillMaxSize())
-                pane(tr("FFT + mask (tap reflections)", "FFT + máscara (toque reflexiones)"), specTile, tB, Modifier.weight(1f).fillMaxSize(), fftTool) { s -> maskShapesOverlay(d.mask, c, s, n) }
-            }
-            Row(Modifier.weight(1f)) {
-                pane(tr("Mask", "Máscara"), maskTile, tC, Modifier.weight(1f).fillMaxSize())
-                pane(tr("IFFT – FILTERED", "IFFT – FILTRADA"), recTile, tD, Modifier.weight(1f).fillMaxSize(), recTool) { s -> profileLine?.let { (a, b) -> drawLine(Color.Green, a, b, 2f / s) } }
-            }
+            Row(Modifier.weight(1f)) { p0(Modifier.weight(1f).fillMaxSize()); p1(Modifier.weight(1f).fillMaxSize()) }
+            Row(Modifier.weight(1f)) { p2(Modifier.weight(1f).fillMaxSize()); p3(Modifier.weight(1f).fillMaxSize()) }
         }
     }) {
         Section(tr("Region", "Región")) {
@@ -183,6 +190,7 @@ fun IfftScreen(vm: AppViewModel, d: Doc) {
             SwitchRow(tr("Edit region on the micrograph", "Editar región en la micrografía"), editRoi) { editRoi = it }
             ChipRow(listOf(128, 256, 512, 1024).filter { it <= minOf(img.width, img.height) }, roi.size, { "$it" }) { d.roi = roi.copy(size = it).clampedTo(img.width, img.height) }
             SwitchRow(tr("Synchronised zoom", "Zoom sincronizado"), sync) { sync = it }
+            Text(tr("Use ⛶ on a panel to enlarge it; tap again to return to the 4 panels.", "Use ⛶ en un panel para ampliarlo; tóquelo otra vez para volver a los 4 paneles."), style = MaterialTheme.typography.bodySmall)
         }
         Section(tr("Fourier mask", "Máscara de Fourier")) {
             ChipRow(MaskTool.entries, tool, { tr(it.en, it.es) }) { tool = it }
